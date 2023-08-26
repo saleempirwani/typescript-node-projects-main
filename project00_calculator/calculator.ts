@@ -1,17 +1,25 @@
 import inquirer from "inquirer";
+import chalk from "chalk";
+
+const log = console.log;
 
 const calculate = (
   n1: number,
   n2: number,
   operator: "+" | "-" | "x" | "/"
-): string | number => {
-  if (Number.isNaN(n1) || Number.isNaN(n2)) return "Invalid n1 or n2 entered";
+): void => {
+  if (Number.isNaN(n1) || Number.isNaN(n2))
+    return log("❌", chalk.red("Invalid n1 or n2 entered"));
 
-  if (operator === "+") return n1 + n2;
-  if (operator === "-") return n1 - n2;
-  if (operator === "x") return n1 * n2;
-  if (operator === "/") return n2 !== 0 ? n1 / n2 : "Cannot divide by 0";
-  return "";
+  let result: number;
+
+  if (operator === "+") result = n1 + n2;
+  else if (operator === "-") result = n1 - n2;
+  else if (operator === "x") result = n1 * n2;
+  else if (operator === "/" && n2 !== 0) result = n1 / n2;
+
+  if (n2 === 0) log("❌", chalk.red("Cannot divide by 0"));
+  else log("✅ Result", chalk.green(result));
 };
 
 async function main() {
@@ -34,8 +42,7 @@ async function main() {
       },
     ]);
 
-    const result = calculate(answers.n1, answers.n2, answers.operator);
-    console.log("Result:", result);
+    calculate(answers.n1, answers.n2, answers.operator);
   } catch (error) {
     console.error("An error occurred:", error);
   }
