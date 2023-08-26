@@ -1,13 +1,20 @@
 import inquirer from "inquirer";
 import chalk from "chalk";
 
+// Types
+type Operator = "+" | "-" | "x" | "/";
+interface IAnswer {
+  n1: number;
+  n2: number;
+  operator: Operator;
+}
+
+type Calc = (n1: number, n2: number, operator: Operator) => void;
+
+// Console Functions
 const log = console.log;
 
-const calculate = (
-  n1: number,
-  n2: number,
-  operator: "+" | "-" | "x" | "/"
-): void => {
+const calculate: Calc = (n1, n2, operator): void => {
   if (Number.isNaN(n1) || Number.isNaN(n2))
     return log("❌", chalk.red("Invalid n1 or n2 entered"));
 
@@ -24,7 +31,7 @@ const calculate = (
 
 async function main() {
   try {
-    const answers = await inquirer.prompt([
+    const answers: IAnswer = await inquirer.prompt([
       {
         type: "number",
         name: "n1",
