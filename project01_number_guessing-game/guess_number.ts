@@ -1,11 +1,20 @@
 import inquirer from "inquirer";
 import chalk from "chalk";
 
+// Types
+interface IAnswer {
+  n1: number;
+}
+
+type Guess = (num: number) => void;
+
+// Console functions
 const log = console.log;
 
+// Generating random number
 const GUESS_NO = Math.round(Math.random() * 9);
 
-const guess = (num: number): void => {
+const guess: Guess = (num) => {
   if (Number.isNaN(num)) log("❌", chalk.red("Invalid number type"));
   else if (num === GUESS_NO) log("✅", chalk.green("Yahh... You won the game"));
   else
@@ -14,7 +23,7 @@ const guess = (num: number): void => {
 
 async function main() {
   try {
-    const answers = await inquirer.prompt([
+    const answers: IAnswer = await inquirer.prompt([
       {
         type: "number",
         name: "n1",
